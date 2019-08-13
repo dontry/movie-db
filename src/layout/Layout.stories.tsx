@@ -1,7 +1,7 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
 import { MemoryRouter } from "react-router-dom"
-import { Header } from "./Header"
+import { Header } from "../Header"
 import { navLinks } from "../constants/navLinks"
 
 
