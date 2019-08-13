@@ -6,7 +6,9 @@ const CancelToken = axios.CancelToken;
 
 console.log(`BASE_URL: ${process.env.BASE_URL}`);
 
-let HOME_URL: string = "http://localhost:3000";
+const BASE_URL: string = process.env.BASE_URL || "https://api.themoviedb.org/3/";
+
+const HOME_URL: string = "http://localhost:3000";
 
 const options = {
   baseURL: `${process.env.BASE_URL}`,
@@ -41,12 +43,18 @@ httpClient.interceptors.response.use(response => {
   }
 });
 
-class ClientAPI {
+export class ClientAPI {
   private requestToken: string;
   private accessToken: string;
-  constructor() {
+  private apiKey: string;
+  private sessionID: string;
+  private accountID: number;
+  constructor(apiKey: string) {
+    this.apiKey = apiKey;
     this.requestToken = "";
     this.accessToken = "";
+    this.sessionID = "";
+    this.accountID = -1;
   }
 
   public setRequestToken(token: string): void {
@@ -57,9 +65,26 @@ class ClientAPI {
     this.accessToken = token;
   }
 
-  public authenticate() {
-    this.get(`/authenticate/${this.requestToken}?redirect_to=${HOME_URL}`);
+  public setSessionID(sessionID: string): void {
+    this.sessionID = sessionID;
   }
+
+
+  public getRequestToken(): string {
+    return this.requestToken;
+  }
+
+  public getAccessToken(): string {
+    return this.accessToken;
+  }
+
+  public getSessionID(): string {
+    return this.sessionID;
+  }
+
+
+
+
 
   public get(url: string, params?: any): Promise<AxiosResponse> {
     return new Promise((resolve, reject) => {
@@ -120,6 +145,59 @@ class ClientAPI {
       });
     });
   }
+
+  public async createRequestToken() {
+    const res = await this.get(`/authentication/token/new?api_key=${this.apiKey}`);
+    if (res.data) {
+      this.setRequestToken(res.data.request_token);
+    }
+  }
+
+  // public async authorizeRequestToken() {
+  //   await this.get(`/authenticate/${this.requestToken}?redirect_to=${process.env.BASE_URL}`)
+  // }
+
+  public async createSessionID(): Promise<boolean> {
+    const res = await this.post(`/authentication/session/new?api_key=${this.accessToken}`, {
+      request_token: this.requestToken
+    })
+    if (res.data) {
+      this.setSessionID(res.data.session_id);
+      return true;
+    } else {
+      return false
+    }
+  }
+
+  public async createSessionIDWithLogin(username: string, password: string) {
+    const res = await this.post("/authentication/token/validate_with_login", {
+      username,
+      password,
+      request_token: this.requestToken
+    })
+
+    if (res.data) {
+      this.setSessionID(res.data.session_id);
+    }
+  }
+
+  public async deleteSessionID() {
+    this.post(`/authentication/session?api_key=${this.apiKey}`, {
+      session_id: this.sessionID
+    })
+  }
+
+  public async getUserDetail() {
+    const res = await this.get(`/account`, { api_key: this.apiKey, session_id: this.sessionID });
+    if (res.data) {
+      this.accountID = res.data.id;
+    }
+  }
+
+  public async getWatchList(sortBy: string = "created_at", page: number = 1, language: string = "en-US") {
+    const res = await this.get(`/account/${this.accountID}/watchlist/tv`, { api_key: this.apiKey, session_id: this.sessionID, sort_by: sortBy, language, page })
+    return res.data;
+  }
 }
 
-export const clientAPI = new ClientAPI();
+export const clientAPI = new ClientAPI(process.env.API_KEY || "");
