@@ -1,8 +1,7 @@
 import React from "react"
 import styled from "styled-components"
-import { space, layout } from "styled-system"
 import { Navigator } from "components/Navigator";
-import { NavItem } from "../models/NavItem"
+import { NavItem } from "./models/NavItem"
 
 const HeaderWrapper = styled.div`
   display: flex;
