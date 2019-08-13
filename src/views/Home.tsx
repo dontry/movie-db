@@ -1,10 +1,9 @@
 
-import React from 'react'
-import { ResultTable } from '../components/ResultTable'
-import styled from 'styled-components'
-import { SearchBar } from '../components/SearchBar'
-import { ResultTable } from '../components/ResultTable'
-import { Container } from '../layout/Container'
+import React from "react"
+import styled from "styled-components"
+import { SearchBar } from "../components/SearchBar"
+import { ResultTable } from "../components/ResultTable"
+import { Container } from "../layout/Container"
 
 const SearchBarWrapper = styled.div`
   float: right;
@@ -13,13 +12,13 @@ const SearchBarWrapper = styled.div`
 
 
 
-export const Home = props => {
+export const Home = () => {
   return (
     <Container>
       <SearchBarWrapper>
-        <SearchBar />
+        <SearchBar onSubmit={() => { }} />
       </SearchBarWrapper>
-      <ResultTable />
+      <ResultTable movies={[]} onToggle={() => { }} />
     </Container>
   )
 }
