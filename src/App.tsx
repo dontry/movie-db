@@ -1,10 +1,10 @@
-import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import { Provider } from 'react-redux'
-import { ThemeProvider } from 'styled-components'
-import { theme } from '@primer/components'
-import { Header } from "layout/Header"
-
+import React from "react";
+import { hot } from "react-hot-loader/root";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { Provider } from "react-redux";
+import { ThemeProvider } from "styled-components";
+import { theme } from "@primer/components";
+import { Header } from "layout/Header";
 
 const App = () => {
   return (
@@ -12,13 +12,19 @@ const App = () => {
       <BrowserRouter>
         <Switch>
           <Route path="*" component={Header} />
-          <Route exact path="/">Home</Route>
-          <Route exact path="/login">Login</Route>
-          <Route exact path="/watch-list">Watch List</Route>
+          <Route exact path="/">
+            Home
+          </Route>
+          <Route exact path="/login">
+            Login
+          </Route>
+          <Route exact path="/watch-list">
+            Watch List
+          </Route>
         </Switch>
       </BrowserRouter>
     </ThemeProvider>
   );
-}
+};
 
-export default App;
+export default hot(App);

@@ -1,6 +1,6 @@
 import { Movie } from "../models/Movie";
 
-export const movies: MovieProps[] = [
+export const movies: Movie[] = [
   {
     vote_count: 10715,
     id: 862,
@@ -15,7 +15,7 @@ export const movies: MovieProps[] = [
     backdrop_path: "/dji4Fm0gCDVb9DQQMRvAI8YNnTz.jpg",
     adult: false,
     overview:
-      "Led by Woody, Andy's toys live happily in his room until Andy's birthday brings Buzz Lightyear onto the scene. Afraid of losing his place in Andy's heart, Woody plots against Buzz. But when circumstances separate Buzz and Woody from their owner, the duo eventually learns to put aside their differences.",
+      "Led by Woody, Andy's toys live happily in his room until Andy's birthday brings Buzz Lightyear onto the scene.Afraid of losing his place in Andy's heart, Woody plots against Buzz.But when circumstances separate Buzz and Woody from their owner, the duo eventually learns to put aside their differences.",
     release_date: "1995-10-30",
     favorite: true
   },

@@ -1,8 +1,8 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Movie } from '../models/Movie'
-import { getYear } from '../utils/getYear'
-import garbage from '../assets/garbage.svg'
+import React from "react"
+import styled from "styled-components"
+import { Movie } from "../models/Movie"
+import { getYear } from "../utils/getYear"
+import garbage from "../assets/garbage.svg"
 
 const Wrapper = styled.div`
 `
@@ -40,6 +40,25 @@ export const MovieItem = ({ movie, onDelete }: MovieProps) => {
       <Heading><Title>{title} ({getYear(release_date)})</Title><ActionIcon onClick={() => onDelete(id)} src={garbage} /></Heading>
       <Description>{overview}</Description>
     </Wrapper>
+  )
+}
+
+
+const ListWrapper = styled.div`
+  padding: 2rem;
+`
+
+
+export interface WatchListProps {
+  movies: Movie[];
+  onDelete(id: number): void
+}
+
+export const WatchList = ({ movies, onDelete }: WatchListProps) => {
+  return (
+    <ListWrapper>
+      {movies.map(movie => (<MovieItem movie={movie} onDelete={onDelete} />))}
+    </ListWrapper>
   )
 }
 

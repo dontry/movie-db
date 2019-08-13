@@ -1,8 +1,8 @@
-import React from 'react'
-import styled from 'styled-components'
-import { space, layout } from 'styled-system'
-import { Navigator } from 'components/Navigator';
-import { NavItem } from '../models/NavItem'
+import React from "react"
+import styled from "styled-components"
+import { space, layout } from "styled-system"
+import { Navigator } from "components/Navigator";
+import { NavItem } from "../models/NavItem"
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -24,7 +24,7 @@ interface Props {
 const defaultNavLinks: NavItem[] = [{ text: "Home", link: "/" }, { text: "Watch List", link: "/watchlist" }]
 
 
-export const Header = ({ title = "", navLinks = [] }) => {
+export const Header = ({ title = "My TV shows", navLinks = defaultNavLinks }: Props) => {
   return (
     <HeaderWrapper>
       <Title>{title}</Title>
