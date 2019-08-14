@@ -22,7 +22,7 @@ const ContentWrapper = styled.div`
 
 export const Home = () => {
   return (
-    <Container>
+    <Container width={[1, 4 / 5]}>
       <ContentWrapper>
         <SearchBarWrapper>
           <SearchBar onSubmit={() => { }} />
