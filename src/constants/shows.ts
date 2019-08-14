@@ -1,6 +1,6 @@
-import { Movie } from "../models/Movie";
+import { Show } from "../models/Show";
 
-export const movies: Movie[] = [
+export const shows: Show[] = [
   {
     vote_count: 10715,
     id: 862,

@@ -1,8 +1,8 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
-import { MovieItem } from "./WatchList";
-import { movies } from "../constants/movies";
+import { ShowItem } from "./WatchList";
+import { shows } from "../constants/shows";
 
-storiesOf("MovieItem", module).add("with info", () => (
-  <MovieItem movie={movies[0]} onDelete={id => console.log(`Delete ${id}`)} />
+storiesOf("ShowItem", module).add("with info", () => (
+  <ShowItem show={shows[0]} onDelete={id => console.log(`Delete ${id}`)} />
 ));

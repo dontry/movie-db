@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { Movie } from "../models/Movie"
+import { Show } from "../models/Show"
 import { getYear } from "../utils/getYear"
 import garbage from "../assets/garbage.svg"
 
@@ -27,14 +27,14 @@ const Description = styled.p`
   line-height: 1.5;
 `
 
-interface MovieProps {
-  movie: Movie;
+interface ShowProps {
+  show: Show;
   onDelete(id: number): void;
 }
 
 
-export const MovieItem = ({ movie, onDelete }: MovieProps) => {
-  const { id, title, release_date, overview } = movie;
+export const ShowItem = ({ show, onDelete }: ShowProps) => {
+  const { id, title, release_date, overview } = show;
   return (
     <Wrapper>
       <Heading><Title>{title} ({getYear(release_date)})</Title><ActionIcon onClick={() => onDelete(id)} src={garbage} /></Heading>
@@ -50,14 +50,14 @@ const ListWrapper = styled.div`
 
 
 export interface WatchListProps {
-  movies: Movie[];
+  shows: Show[];
   onDelete(id: number): void
 }
 
-export const WatchList = ({ movies, onDelete }: WatchListProps) => {
+export const WatchList = ({ shows, onDelete }: WatchListProps) => {
   return (
     <ListWrapper>
-      {movies.map(movie => (<MovieItem movie={movie} onDelete={onDelete} />))}
+      {shows.map(show => (<ShowItem show={show} onDelete={onDelete} />))}
     </ListWrapper>
   )
 }

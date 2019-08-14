@@ -30,7 +30,7 @@ export class Login extends Component {
         // const POPUP_TOP = window.innerHeight / 2 - (POPUP_HEIGHT / 2);
         // popupReference = window.open(url, "", `toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=${POPUP_WIDTH}, height=${POPUP_HEIGHT}, top=${POPUP_TOP}, left=${POPUP_LEFT}`)
 
-        const url = `https://www.themoviedb.org/authenticate//${clientAPI.getRequestToken()}?redirect_to=${process.env.BASE_URL}`
+        const url = `https://www.theshowdb.org/authenticate//${clientAPI.getRequestToken()}?redirect_to=${process.env.BASE_URL}`
         window.location.assign(url);
     }
 

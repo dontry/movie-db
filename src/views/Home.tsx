@@ -18,7 +18,7 @@ export const Home = () => {
       <SearchBarWrapper>
         <SearchBar onSubmit={() => { }} />
       </SearchBarWrapper>
-      <ResultTable movies={[]} onToggle={() => { }} />
+      <ResultTable shows={[]} onToggle={() => { }} />
     </Container>
   )
 }

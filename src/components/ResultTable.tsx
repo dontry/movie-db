@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { layout, space } from "styled-system";
-import { Movie } from "../models/Movie";
+import { Show } from "../models/Show";
 import { getYear } from "../utils/getYear";
 import garbage from "../assets/garbage.svg";
 import add from "../assets/add.svg";
@@ -18,7 +18,7 @@ const TableBodyCell = styled.td`
   overflow: hidden;
 `;
 
-const MovieCover = styled.img`
+const ShowCover = styled.img`
   width: 100px;
   height: 100px;
 `;
@@ -32,17 +32,17 @@ const ActionIcon = styled.img`
   }
 `;
 
-export interface MovieItemProps {
-  movie: Movie;
+export interface ShowItemProps {
+  show: Show;
   onToggle(id: number, favorite: boolean): void;
 }
 
-export const MovieItem = ({ movie, onToggle }: MovieItemProps) => {
-  const { id, poster_path, title, vote_average, release_date, original_language, favorite } = movie;
+export const ShowItem = ({ show, onToggle }: ShowItemProps) => {
+  const { id, poster_path, title, vote_average, release_date, original_language, favorite } = show;
   return (
     <TableBodyRow>
       <TableBodyCell>
-        <MovieCover
+        <ShowCover
           src={`https://image.tmdb.org/t/p/w185_and_h278_bestv2/${poster_path}`}
           alt={title}
         />
@@ -85,11 +85,11 @@ const TableBody = styled.tbody`
 `;
 
 interface ResultTableProps {
-  movies: Movie[];
+  shows: Show[];
   onToggle(id: number, favorite: boolean): void;
 }
 
-export const ResultTable = ({ movies = [], onToggle }: ResultTableProps) => {
+export const ResultTable = ({ shows = [], onToggle }: ResultTableProps) => {
   return (
     <Table>
       <TableHead>
@@ -115,8 +115,8 @@ export const ResultTable = ({ movies = [], onToggle }: ResultTableProps) => {
         <col width="200px" />
         <col width="200px" />
         <col width="200px" />
-        {movies.map(movie => (
-          <MovieItem movie={movie} onToggle={onToggle} />
+        {shows.map(show => (
+          <ShowItem show={show} onToggle={onToggle} />
         ))}
       </TableBody>
     </Table>

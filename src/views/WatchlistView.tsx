@@ -3,10 +3,10 @@ import React from "react"
 import { Container } from "layout/Container";
 import { WatchList, WatchListProps } from "components/WatchList";
 
-export const WatchListView = ({ movies, onDelete }: WatchListProps) => {
+export const WatchListView = ({ shows, onDelete }: WatchListProps) => {
   return (
     <Container>
-      <WatchList movies={movies} onDelete={() => { }} />
+      <WatchList shows={shows} onDelete={() => { }} />
     </Container>
   )
 }
