@@ -1,6 +1,8 @@
 
 import React from "react"
 import styled from "styled-components"
+import { space, SpaceProps } from "styled-system"
+import Pagination from "@atlaskit/pagination"
 import { SearchBar } from "../components/SearchBar"
 import { ResultTable } from "../components/ResultTable"
 import { Container } from "../layout/Container"
@@ -19,6 +21,9 @@ const ContentWrapper = styled.div`
 `
 
 
+const PaginationWrapper = styled.div<SpaceProps>`
+  ${space}
+`
 
 export const Home = () => {
   return (
@@ -28,6 +33,9 @@ export const Home = () => {
           <SearchBar onSubmit={() => { }} />
         </SearchBarWrapper>
         <ResultTable shows={[]} onToggle={() => { }} />
+        <PaginationWrapper mt={[8, 16]}>
+          <Pagination pages={[1, 2]} />
+        </PaginationWrapper>
       </ContentWrapper>
     </Container>
 
