@@ -1,21 +1,21 @@
 import React from "react";
 import styled from "styled-components";
-import { layout, space } from "styled-system";
+import { layout, space, color, LayoutProps, ColorProps, SpaceProps } from "styled-system";
 import { Show } from "../models/Show";
 import { getYear } from "../utils/getYear";
 import garbage from "../assets/garbage.svg";
 import add from "../assets/add.svg";
 
+const CellWidth = ["100px", "200px", "250px"];
 const TableBodyRow = styled.tr`
-  width: 100%;
 `;
 
-const TableBodyCell = styled.td`
+const TableBodyCell = styled.td<LayoutProps>`
   align-content: center;
   padding: 5px;
   text-align: center;
-  width: calc(100% / 5);
   overflow: hidden;
+  ${layout}
 `;
 
 const ShowCover = styled.img`
@@ -41,48 +41,54 @@ export const ShowItem = ({ show, onToggle }: ShowItemProps) => {
   const { id, poster_path, title, vote_average, release_date, original_language, favorite } = show;
   return (
     <TableBodyRow>
-      <TableBodyCell>
+      <TableBodyCell width={CellWidth}>
         <ShowCover
           src={`https://image.tmdb.org/t/p/w185_and_h278_bestv2/${poster_path}`}
           alt={title}
         />
-      </TableBodyCell>
-      <TableBodyCell>{title}</TableBodyCell>
-      <TableBodyCell>{getYear(release_date)}</TableBodyCell>
-      <TableBodyCell>{vote_average}</TableBodyCell>
-      <TableBodyCell>{original_language}</TableBodyCell>
-      <TableBodyCell onClick={() => onToggle(id, !!favorite)}>
-        {" "}
+      </TableBodyCell >
+      <TableBodyCell width={CellWidth}>{title}</TableBodyCell>
+      <TableBodyCell width={CellWidth}>{getYear(release_date)}</TableBodyCell>
+      <TableBodyCell width={CellWidth}>{vote_average}</TableBodyCell>
+      <TableBodyCell width={CellWidth}>{original_language}</TableBodyCell>
+      <TableBodyCell width={CellWidth} onClick={() => onToggle(id, !!favorite)}>
         <ActionIcon src={!!favorite ? garbage : add} />{" "}
       </TableBodyCell>
     </TableBodyRow>
   );
 };
 
-const Table = styled.table`
+const Table = styled.table<LayoutProps | ColorProps>`
   table-layout: fixed;
   border-collapse: collapse;
-  width: 100%;
+  border: 1px solid #e8e8e8;
+  border-spacing: 0;
+  ${layout}
+  ${color}
 `;
 
-const TableHead = styled.thead``;
+const TableHead = styled.thead`
+`;
 
-const TableHeadRow = styled.tr`
+const TableHeadRow = styled.tr<SpaceProps>`
   display: block;
+  border-bottom: 1px solid #e8e8e8;
+  ${space}
 `;
 
-const TableHeadCell = styled.th`
+const TableHeadCell = styled.th<LayoutProps>`
   padding: 5px;
   text-align: center;
-  width: calc(100% / 5);
-  border-bottom: 1px solid #f8f8f8;
+  ${layout}
+`;
+
+const TableBodyWrapper = styled.div`
+  display: block;
+  overflow: auto;
+  height: 50vh;
 `;
 
 const TableBody = styled.tbody`
-  display: block;
-  width: 100%;
-  overflow: auto;
-  height: 50vh;
 `;
 
 interface ResultTableProps {
@@ -93,27 +99,23 @@ interface ResultTableProps {
 export const ResultTable = ({ shows = [], onToggle }: ResultTableProps) => {
   return (
     <Table>
-      <TableHead>
-        <TableHeadRow>
-          <TableHeadCell>Cover</TableHeadCell>
-          <TableHeadCell>Title</TableHeadCell>
-          <TableHeadCell>Year</TableHeadCell>
-          <TableHeadCell>Rate</TableHeadCell>
-          <TableHeadCell>Lang</TableHeadCell>
-          <TableHeadCell>Add/Remove Watchlist</TableHeadCell>
+      <TableHead >
+        <TableHeadRow p={[5, 3]}>
+          <TableHeadCell width={CellWidth}>Cover</TableHeadCell>
+          <TableHeadCell width={CellWidth}>Title</TableHeadCell>
+          <TableHeadCell width={CellWidth}>Year</TableHeadCell>
+          <TableHeadCell width={CellWidth}>Rate</TableHeadCell>
+          <TableHeadCell width={CellWidth}>Lang</TableHeadCell>
+          <TableHeadCell width={CellWidth}>Add/Remove Watchlist</TableHeadCell>
         </TableHeadRow>
       </TableHead>
-      <TableBody>
-        <col />
-        <col />
-        <col />
-        <col />
-        <col />
-        <col />
-        {shows.map(show => (
-          <ShowItem show={show} onToggle={onToggle} />
-        ))}
-      </TableBody>
+      <TableBodyWrapper>
+        <TableBody>
+          {shows.map(show => (
+            <ShowItem show={show} onToggle={onToggle} />
+          ))}
+        </TableBody>
+      </TableBodyWrapper>
     </Table>
   );
 };
