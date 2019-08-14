@@ -14,7 +14,7 @@ const TableBodyCell = styled.td`
   align-content: center;
   padding: 5px;
   text-align: center;
-  width: 200px;
+  width: calc(100% / 5);
   overflow: hidden;
 `;
 
@@ -62,6 +62,7 @@ export const ShowItem = ({ show, onToggle }: ShowItemProps) => {
 const Table = styled.table`
   table-layout: fixed;
   border-collapse: collapse;
+  width: 100%;
 `;
 
 const TableHead = styled.thead``;
@@ -73,7 +74,7 @@ const TableHeadRow = styled.tr`
 const TableHeadCell = styled.th`
   padding: 5px;
   text-align: center;
-  width: 200px;
+  width: calc(100% / 5);
   border-bottom: 1px solid #f8f8f8;
 `;
 
@@ -94,12 +95,6 @@ export const ResultTable = ({ shows = [], onToggle }: ResultTableProps) => {
     <Table>
       <TableHead>
         <TableHeadRow>
-          <col width="200px" />
-          <col width="200px" />
-          <col width="200px" />
-          <col width="200px" />
-          <col width="200px" />
-          <col width="200px" />
           <TableHeadCell>Cover</TableHeadCell>
           <TableHeadCell>Title</TableHeadCell>
           <TableHeadCell>Year</TableHeadCell>
@@ -109,12 +104,12 @@ export const ResultTable = ({ shows = [], onToggle }: ResultTableProps) => {
         </TableHeadRow>
       </TableHead>
       <TableBody>
-        <col width="200px" />
-        <col width="200px" />
-        <col width="200px" />
-        <col width="200px" />
-        <col width="200px" />
-        <col width="200px" />
+        <col />
+        <col />
+        <col />
+        <col />
+        <col />
+        <col />
         {shows.map(show => (
           <ShowItem show={show} onToggle={onToggle} />
         ))}

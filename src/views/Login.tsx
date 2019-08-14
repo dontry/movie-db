@@ -4,9 +4,13 @@ import { clientAPI } from "../api";
 
 const Wrapper = styled.div`
     position: absolute;
-    top: 0;
-    left: 0;
+    display: flex;
+    flex-direction:column;
+    align-items:center;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
+
 `
 const Title = styled.h1``
 
@@ -28,9 +32,8 @@ export class Login extends Component {
     public openPopup = () => {
         // const POPUP_LEFT = window.innerWidth / 2 - (POPUP_WIDTH / 2);
         // const POPUP_TOP = window.innerHeight / 2 - (POPUP_HEIGHT / 2);
-        // popupReference = window.open(url, "", `toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=${POPUP_WIDTH}, height=${POPUP_HEIGHT}, top=${POPUP_TOP}, left=${POPUP_LEFT}`)
-
-        const url = `https://www.theshowdb.org/authenticate//${clientAPI.getRequestToken()}?redirect_to=${process.env.BASE_URL}`
+        // const popupReference = window.open(url, "", `toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=${POPUP_WIDTH}, height=${POPUP_HEIGHT}, top=${POPUP_TOP}, left=${POPUP_LEFT}`)
+        const url = `https://www.themoviedb.org/authenticate/${clientAPI.getRequestToken()}?redirect_to=${process.env.REACT_APP_AUTH_URL}`
         window.location.assign(url);
     }
 
@@ -39,7 +42,7 @@ export class Login extends Component {
         return (
             <Wrapper>
                 <Title>My TV Shows DB</Title>
-                <Button>Login</Button>
+                <Button onClick={this.handleClick}>Login</Button>
             </Wrapper>
         )
     }

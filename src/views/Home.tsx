@@ -6,8 +6,16 @@ import { ResultTable } from "../components/ResultTable"
 import { Container } from "../layout/Container"
 
 const SearchBarWrapper = styled.div`
-  float: right;
+  align-self: flex-end;
   margin-bottom: 30px;
+`
+
+const ContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1200px;
+  margin: 50px auto 0;
 `
 
 
@@ -15,11 +23,14 @@ const SearchBarWrapper = styled.div`
 export const Home = () => {
   return (
     <Container>
-      <SearchBarWrapper>
-        <SearchBar onSubmit={() => { }} />
-      </SearchBarWrapper>
-      <ResultTable shows={[]} onToggle={() => { }} />
+      <ContentWrapper>
+        <SearchBarWrapper>
+          <SearchBar onSubmit={() => { }} />
+        </SearchBarWrapper>
+        <ResultTable shows={[]} onToggle={() => { }} />
+      </ContentWrapper>
     </Container>
+
   )
 }
 
