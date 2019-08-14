@@ -1,4 +1,4 @@
-export interface Movie {
+export interface Show {
   vote_count: number;
   id: number;
   video: boolean;

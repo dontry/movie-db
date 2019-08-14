@@ -4,19 +4,17 @@ let cancel: Canceler;
 const promiseArray: any = {};
 const CancelToken = axios.CancelToken;
 
-console.log(`BASE_URL: ${process.env.BASE_URL}`);
 
-const BASE_URL: string = process.env.BASE_URL || "https://api.themoviedb.org/3/";
 
-const HOME_URL: string = "http://localhost:3000";
+
 
 const options = {
-  baseURL: `${process.env.BASE_URL}`,
+  baseURL: `${process.env.REACT_APP_API_URL}`,
   headers: { "X-Requested-With": "XMLHttpRequest" },
   timeout: 10000
 };
 
-const httpClient = axios.create(options);
+export const httpClient = axios.create(options);
 
 httpClient.interceptors.request.use(
   (config: any) => {
@@ -44,16 +42,16 @@ httpClient.interceptors.response.use(response => {
 });
 
 export class ClientAPI {
-  private requestToken: string;
-  private accessToken: string;
-  private apiKey: string;
-  private sessionID: string;
+  private requestToken: string | null;
+  private accessToken: string | null;
+  private apiKey: string | null;
+  private sessionID: string | null;
   private accountID: number;
   constructor(apiKey: string) {
     this.apiKey = apiKey;
-    this.requestToken = "";
-    this.accessToken = "";
-    this.sessionID = "";
+    this.requestToken = null;
+    this.accessToken = null;
+    this.sessionID = null;
     this.accountID = -1;
   }
 
@@ -70,15 +68,15 @@ export class ClientAPI {
   }
 
 
-  public getRequestToken(): string {
+  public getRequestToken(): string | null {
     return this.requestToken;
   }
 
-  public getAccessToken(): string {
+  public getAccessToken(): string | null {
     return this.accessToken;
   }
 
-  public getSessionID(): string {
+  public getSessionID(): string | null {
     return this.sessionID;
   }
 
@@ -146,19 +144,35 @@ export class ClientAPI {
     });
   }
 
+  /*
+   Step 1: Create a request token
+   */
+  // https://developers.themoviedb.org/3/authentication/create-request-token
   public async createRequestToken() {
-    const res = await this.get(`/authentication/token/new?api_key=${this.apiKey}`);
+    const res = await this.get(`/authentication/token/new`, { api_key: this.apiKey });
     if (res.data) {
       this.setRequestToken(res.data.request_token);
     }
   }
 
-  // public async authorizeRequestToken() {
-  //   await this.get(`/authenticate/${this.requestToken}?redirect_to=${process.env.BASE_URL}`)
-  // }
+  /*
+    Step 2: Ask the user for permission
 
+    forward your user to https://www.themoviedb.org/authenticate/{REQUEST_TOKEN}
+    and ask them to approve the request token
+
+  */
+
+
+
+  /*
+    Step 3: Create a session ID
+    The session ID allows the app to write user data.
+
+    https://developers.themoviedb.org/3/authentication/create-session
+  */
   public async createSessionID(): Promise<boolean> {
-    const res = await this.post(`/authentication/session/new?api_key=${this.accessToken}`, {
+    const res = await this.post(`/authentication/session/new?api_key=${this.apiKey}`, {
       request_token: this.requestToken
     })
     if (res.data) {
@@ -197,6 +211,13 @@ export class ClientAPI {
   public async getWatchList(sortBy: string = "created_at", page: number = 1, language: string = "en-US") {
     const res = await this.get(`/account/${this.accountID}/watchlist/tv`, { api_key: this.apiKey, session_id: this.sessionID, sort_by: sortBy, language, page })
     return res.data;
+  }
+
+  // https://developers.themoviedb.org/3/account/add-to-watchlist
+  public async addToWatchList(showID: number): Promise<boolean> {
+    const res = await this.post(`/account/${this.accountID}/watchlist?api_key=${this.apiKey}`, { media_type: "tv", media_id: showID, watchlist: true })
+    // 201 status_code: 1, 401 status_code: 3, 404 status_code: 34
+    return res.data.status_code === 1;
   }
 }
 
