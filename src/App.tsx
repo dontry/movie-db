@@ -5,28 +5,29 @@ import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
 import { theme } from "@primer/components";
 import { Header } from "Header";
-import { PrivateRoute } from "components/ProtectedRoute";
+import { Login } from "./views/Login"
+import { Home } from "./views/Home";
+import { Auth } from "./views/Auth";
+import { WatchListView } from "./views/WatchListView";
+import { ProtectedRoute } from "components/ProtectedRoute";
 
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-        <Route exact path="/login">
-          Login
-          </Route>
-        <PrivateRoute path="/">
-          <Switch>
-            <Route path="*" component={Header} />
-            <Route exact path="/">
-              Home
-          </Route>
-            <Route exact path="/watch-list">
-              Watch List
-          </Route>
-          </Switch>
-        </PrivateRoute>
+        <Switch>
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/auth" component={Auth} />
+          <ProtectedRoute path="/">
+            <ProtectedRoute component={Header} />
+            <Switch>
+              <ProtectedRoute exact path="/" component={Home} />
+              <ProtectedRoute exact path="/watch-list" comonent={WatchListView} />
+            </Switch>
+          </ProtectedRoute>
+        </Switch>
       </BrowserRouter>
-    </ThemeProvider>
+    </ThemeProvider >
   );
 };
 

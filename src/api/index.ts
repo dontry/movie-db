@@ -10,7 +10,6 @@ const CancelToken = axios.CancelToken;
 
 const options = {
   baseURL: `${process.env.REACT_APP_API_URL}`,
-  headers: { "X-Requested-With": "XMLHttpRequest" },
   timeout: 10000
 };
 
@@ -42,25 +41,21 @@ httpClient.interceptors.response.use(response => {
 });
 
 export class ClientAPI {
-  private requestToken: string | null;
-  private accessToken: string | null;
   private apiKey: string | null;
   private sessionID: string | null;
   private accountID: number;
   constructor(apiKey: string) {
     this.apiKey = apiKey;
-    this.requestToken = null;
-    this.accessToken = null;
     this.sessionID = null;
     this.accountID = -1;
   }
 
   public setRequestToken(token: string): void {
-    this.requestToken = token;
+    sessionStorage.setItem("requestToken", token);
   }
 
   public setAccessToken(token: string): void {
-    this.accessToken = token;
+    sessionStorage.setItem("accessToken", token);
   }
 
   public setSessionID(sessionID: string): void {
@@ -69,27 +64,23 @@ export class ClientAPI {
 
 
   public getRequestToken(): string | null {
-    return this.requestToken;
+    return sessionStorage.getItem("requestToken");
   }
 
   public getAccessToken(): string | null {
-    return this.accessToken;
+    return sessionStorage.getItem("accessToken");
   }
 
   public getSessionID(): string | null {
     return this.sessionID;
   }
 
-
-
-
-
   public get(url: string, params?: any): Promise<AxiosResponse> {
     return new Promise((resolve, reject) => {
       httpClient({
         method: "get",
         url,
-        params: { ...params, requestToken: this.requestToken },
+        params: { ...params, requestToken: this.getRequestToken() },
         cancelToken: new CancelToken(c => {
           cancel = c;
         })
@@ -173,8 +164,9 @@ export class ClientAPI {
   */
   public async createSessionID(): Promise<boolean> {
     const res = await this.post(`/authentication/session/new?api_key=${this.apiKey}`, {
-      request_token: this.requestToken
+      request_token: this.getRequestToken()
     })
+    console.log("res:", res.data);
     if (res.data) {
       this.setSessionID(res.data.session_id);
       return true;
@@ -187,7 +179,7 @@ export class ClientAPI {
     const res = await this.post("/authentication/token/validate_with_login", {
       username,
       password,
-      request_token: this.requestToken
+      request_token: this.getRequestToken()
     })
 
     if (res.data) {
@@ -219,6 +211,11 @@ export class ClientAPI {
     // 201 status_code: 1, 401 status_code: 3, 404 status_code: 34
     return res.data.status_code === 1;
   }
+
+  public async searchTvShows(query: string, page: number = 1, language: string = "en-US") {
+    const res = await this.get(`/search/tv`, { api_key: this.apiKey, query, page, language })
+    return res.data;
+  }
 }
 
-export const clientAPI = new ClientAPI(process.env.API_KEY || "");
+export const clientAPI = new ClientAPI(process.env.REACT_APP_API_KEY || "");

@@ -8,6 +8,11 @@ const TextInput = styled.input`
   border-radius: 2px;
 `;
 
+const Label = styled.label`
+  margin-right: 1rem;
+  font-weight: bold;
+`
+
 interface Props {
   onSubmit(query: string): void;
 }
@@ -26,5 +31,5 @@ export const SearchBar = ({ onSubmit }: Props) => {
     }
   };
 
-  return <TextInput onChange={handleChange} onKeyPress={handleKeyPress} />;
+  return (<><Label htmlFor="search-bar">Search:</Label><TextInput id="search-bar" onChange={handleChange} onKeyPress={handleKeyPress} /></>);
 };
