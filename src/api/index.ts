@@ -245,19 +245,23 @@ export class ClientAPI {
     return res.data;
   }
 
-  public async deletSessionID(): Promise<boolean> {
-    const res = await await this.delete(`/authentication/session?api_key=${this.apiKey}`, {
+  public async deleteSessionID(): Promise<boolean> {
+    const res = await this.delete(`/authentication/session?api_key=${this.apiKey}`, {
       session_id: this.getSessionID()
     });
     return res.data.success;
   }
 
   public async logout() {
-    await this.deletSessionID();
-    localStorage.removeItem("tvdb_requestToken");
-    localStorage.removeItem("tvdb_accessToken");
-    localStorage.removeItem("tvdb_accountID");
-    localStorage.removeItem("tvdb_sessionID");
+    const isSuccess = await this.deleteSessionID();
+    if (isSuccess) {
+      localStorage.removeItem("tvdb_requestToken");
+      localStorage.removeItem("tvdb_accessToken");
+      localStorage.removeItem("tvdb_accountID");
+      localStorage.removeItem("tvdb_sessionID");
+    } else {
+      throw Error("Logout Failure.");
+    }
   }
 }
 

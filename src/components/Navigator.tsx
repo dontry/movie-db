@@ -34,7 +34,7 @@ export const Navigator = ({ navLinks = [] }: Props) => {
       <NavList>
         {navLinks.map((item, index) => (
           <>
-            <Item>
+            <Item key={item.text}>
               <Link to={item.link}>{item.text}</Link>
             </Item>
             {navLinks.length - 1 !== index && <span>|</span>}

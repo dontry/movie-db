@@ -3,7 +3,7 @@ import { State as NotificationState } from "../reducers/notification";
 import { Show } from "models/Show";
 export interface RootState {
   user: User | null;
-  watchList: Show[];
+  watchlist: Show[];
   loading: boolean;
   notification: NotificationState;
 }
