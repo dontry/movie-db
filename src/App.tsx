@@ -11,7 +11,7 @@ import { rootSaga } from 'sagas'
 import Header from "layout/Header";
 import { Login } from "views/Login";
 import Home from "views/Home";
-import { WatchlistView } from "views/WatchlistView";
+import { MyWatchlist } from "views/MyWatchList";
 import Auth from "views/Auth";
 import ProtectedRoute from "components/ProtectedRoute";
 import LoadingSpinner from "components/LoadingSpinner";
@@ -33,7 +33,7 @@ const App = () => {
                 <ProtectedRoute component={Header} />
                 <Switch>
                   <ProtectedRoute exact path="/" component={Home} />
-                  <ProtectedRoute exact path="/watchlist" comonent={WatchlistView} />
+                  <ProtectedRoute exact path="/watchlist" component={MyWatchlist} />
                 </Switch>
               </ProtectedRoute>
             </Switch>
