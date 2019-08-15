@@ -4,7 +4,7 @@
       "REACT_APP_API_URL": "https://api.themoviedb.org/3",
       "REACT_APP_API_KEY": "5d074a467cdab619940dd339c47261b3",
       "REACT_APP_ACCESS_TOKEN": "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1ZDA3NGE0NjdjZGFiNjE5OTQwZGQzMzljNDcyNjFiMyIsInN1YiI6IjVkNGZmM2UwNDFlZWUxMDAxNTBmOWQxYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.VChW0h7dsaC49hkBpmFANpqth1aqERWZWTiE7xzcb0I",
-      "REACT_APP_BASE_URL": "https://tvshow-db-d2863rjd4.now.sh"
+      "REACT_APP_BASE_URL": "https://tvshow-db.mccoy018.now.sh"
     }
   }
 }
