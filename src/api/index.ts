@@ -83,12 +83,6 @@ export class ClientAPI {
     return localStorage.getItem("tvdb_accountID");
   }
 
-  public async deleteSessionID() {
-    await this.post(`/authentication/session?api_key=${this.apiKey}`, {
-      session_id: this.getSessionID()
-    });
-  }
-
   public get(url: string, params?: any): Promise<AxiosResponse> {
     return new Promise((resolve, reject) => {
       httpClient({
@@ -249,6 +243,21 @@ export class ClientAPI {
   public async searchTvShows(query: string, page: number = 1, language: string = "en-US") {
     const res = await this.get(`/search/tv`, { api_key: this.apiKey, query, page, language });
     return res.data;
+  }
+
+  public async deletSessionID(): Promise<boolean> {
+    const res = await await this.delete(`/authentication/session?api_key=${this.apiKey}`, {
+      session_id: this.getSessionID()
+    });
+    return res.data.success;
+  }
+
+  public async logout() {
+    await this.deletSessionID();
+    localStorage.removeItem("tvdb_requestToken");
+    localStorage.removeItem("tvdb_accessToken");
+    localStorage.removeItem("tvdb_accountID");
+    localStorage.removeItem("tvdb_sessionID");
   }
 }
 
