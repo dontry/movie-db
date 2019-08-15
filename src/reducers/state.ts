@@ -1,3 +1,3 @@
 export interface RootState {
-    watchList: object
+  watchList: object;
 }

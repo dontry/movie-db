@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
 import { theme } from "@primer/components";
 import { Header } from "Header";
-import { Login } from "./views/Login"
+import { Login } from "./views/Login";
 import { Home } from "./views/Home";
 import { Auth } from "./views/Auth";
 import { WatchListView } from "./views/WatchListView";
@@ -27,7 +27,7 @@ const App = () => {
           </ProtectedRoute>
         </Switch>
       </BrowserRouter>
-    </ThemeProvider >
+    </ThemeProvider>
   );
 };
 

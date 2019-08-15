@@ -6,10 +6,6 @@ let cancel: Canceler;
 const promiseArray: any = {};
 const CancelToken = axios.CancelToken;
 
-
-
-
-
 const options = {
   baseURL: `${process.env.REACT_APP_API_URL}`,
   timeout: 10000
@@ -41,7 +37,6 @@ httpClient.interceptors.response.use(response => {
     return Promise.reject(response);
   }
 });
-
 
 interface WatchListResponse {
   page: number;
@@ -91,7 +86,7 @@ export class ClientAPI {
   public async deleteSessionID() {
     await this.post(`/authentication/session?api_key=${this.apiKey}`, {
       session_id: this.getSessionID()
-    })
+    });
   }
 
   public get(url: string, params?: any): Promise<AxiosResponse> {
@@ -173,8 +168,6 @@ export class ClientAPI {
 
   */
 
-
-
   /*
     Step 3: Create a session ID
     The session ID allows the app to write user data.
@@ -184,12 +177,12 @@ export class ClientAPI {
   public async createSessionID(): Promise<boolean> {
     const res = await this.post(`/authentication/session/new?api_key=${this.apiKey}`, {
       request_token: this.getRequestToken()
-    })
+    });
     if (res.data) {
       this.setSessionID(res.data.session_id);
       return true;
     } else {
-      return false
+      return false;
     }
   }
 
@@ -198,44 +191,63 @@ export class ClientAPI {
       username,
       password,
       request_token: this.getRequestToken()
-    })
+    });
 
     if (res.data) {
       this.setSessionID(res.data.session_id);
     }
   }
 
-
-
   // https://developers.themoviedb.org/3/account/get-account-details
   public async getUserDetail(): Promise<User> {
-    const res = await this.get(`/account`, { api_key: this.apiKey, session_id: this.getSessionID() });
-    this.setAccountID(res.data.id)
+    const res = await this.get(`/account`, {
+      api_key: this.apiKey,
+      session_id: this.getSessionID()
+    });
+    this.setAccountID(res.data.id);
     return res.data;
   }
 
-  public async getWatchList(sortBy: string = "created_at", page: number = 1, language: string = "en-US"): Promise<WatchListResponse> {
-    const res = await this.get(`/account/${this.getAccountID()}/watchlist/tv`, { api_key: this.apiKey, session_id: this.getSessionID(), sort_by: sortBy, language, page })
+  public async getWatchList(
+    sortBy: string = "created_at",
+    page: number = 1,
+    language: string = "en-US"
+  ): Promise<WatchListResponse> {
+    const res = await this.get(`/account/${this.getAccountID()}/watchlist/tv`, {
+      api_key: this.apiKey,
+      session_id: this.getSessionID(),
+      sort_by: sortBy,
+      language,
+      page
+    });
     return res.data;
   }
 
   // https://developers.themoviedb.org/3/account/add-to-watchlist
   public async addToWatchList(showID: number): Promise<boolean> {
-    const res = await this.post(`/account/${this.getAccountID()}/watchlist?api_key=${this.apiKey}&session_id=${this.getSessionID()}`, { media_type: "tv", media_id: showID, watchlist: true })
+    const res = await this.post(
+      `/account/${this.getAccountID()}/watchlist?api_key=${
+        this.apiKey
+      }&session_id=${this.getSessionID()}`,
+      { media_type: "tv", media_id: showID, watchlist: true }
+    );
     // 201 status_code: 1, 401 status_code: 3, 404 status_code: 34
     return res.data.status_code === 1;
   }
 
   public async removeFromWatchList(showID: number): Promise<boolean> {
-    const res = await this.post(`/account/${this.getAccountID()}/watchlist?api_key=${this.apiKey}&session_id=${this.getSessionID()}`, { media_type: "tv", media_id: showID, watchlist: false })
+    const res = await this.post(
+      `/account/${this.getAccountID()}/watchlist?api_key=${
+        this.apiKey
+      }&session_id=${this.getSessionID()}`,
+      { media_type: "tv", media_id: showID, watchlist: false }
+    );
     // 201 status_code: 1, 401 status_code: 3, 404 status_code: 34
     return res.data.status_code === 1;
   }
 
-
-
   public async searchTvShows(query: string, page: number = 1, language: string = "en-US") {
-    const res = await this.get(`/search/tv`, { api_key: this.apiKey, query, page, language })
+    const res = await this.get(`/search/tv`, { api_key: this.apiKey, query, page, language });
     return res.data;
   }
 }
