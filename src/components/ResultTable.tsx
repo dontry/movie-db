@@ -6,10 +6,8 @@ import { getYear } from "../utils/getYear";
 import garbage from "../assets/garbage.svg";
 import add from "../assets/add.svg";
 
-
 const CellWidth = ["100px", "200px", "250px"];
-const TableBodyRow = styled.tr`
-`;
+const TableBodyRow = styled.tr``;
 
 const TableBodyCell = styled.td<LayoutProps>`
   box-sizing: border-box;
@@ -44,7 +42,15 @@ export interface ShowItemProps {
 }
 
 export const ShowItem = ({ show, toggleWatchList }: ShowItemProps) => {
-  const { id, poster_path, name: title, vote_average, first_air_date, original_language, watchlist } = show;
+  const {
+    id,
+    poster_path,
+    name: title,
+    vote_average,
+    first_air_date,
+    original_language,
+    watchlist
+  } = show;
   return (
     <TableBodyRow>
       <TableBodyCell width={CellWidth}>
@@ -52,7 +58,7 @@ export const ShowItem = ({ show, toggleWatchList }: ShowItemProps) => {
           src={`https://image.tmdb.org/t/p/w185_and_h278_bestv2/${poster_path}`}
           alt={title}
         />
-      </TableBodyCell >
+      </TableBodyCell>
       <TableBodyCell width={CellWidth}>{title}</TableBodyCell>
       <TableBodyCell width={CellWidth}>{getYear(first_air_date)}</TableBodyCell>
       <TableBodyCell width={CellWidth}>{vote_average}</TableBodyCell>
@@ -73,8 +79,7 @@ const Table = styled.table<LayoutProps | ColorProps>`
   ${color}
 `;
 
-const TableHead = styled.thead`
-`;
+const TableHead = styled.thead``;
 
 const TableHeadRow = styled.tr<SpaceProps>`
   display: block;
@@ -103,7 +108,7 @@ const EmptyText = styled.h4`
   margin: 32px auto;
   text-align: center;
   color: #bbb;
-`
+`;
 
 interface ResultTableProps {
   shows: Show[];
@@ -113,23 +118,28 @@ interface ResultTableProps {
 export const ResultTable = ({ shows = [], toggleWatchList }: ResultTableProps) => {
   return (
     <Table>
-      <TableHead >
-        <TableHeadRow >
+      <TableHead>
+        <TableHeadRow>
           <TableHeadCell width={CellWidth}>Cover</TableHeadCell>
           <TableHeadCell width={CellWidth}>Title</TableHeadCell>
           <TableHeadCell width={CellWidth}>Year</TableHeadCell>
           <TableHeadCell width={CellWidth}>Rate</TableHeadCell>
           <TableHeadCell width={CellWidth}>Lang</TableHeadCell>
-          <TableHeadCell width={CellWidth}>Add/Remove<br /> Watchlist</TableHeadCell>
+          <TableHeadCell width={CellWidth}>
+            Add/Remove
+            <br /> Watchlist
+          </TableHeadCell>
         </TableHeadRow>
       </TableHead>
-      {shows.length === 0 ?
-        <EmptyText>Empty list</EmptyText> :
+      {shows.length === 0 ? (
+        <EmptyText>Empty list</EmptyText>
+      ) : (
         <TableBody height={["60vh", "50vh"]}>
           {shows.map(show => (
             <ShowItem show={show} toggleWatchList={toggleWatchList} />
           ))}
-        </TableBody>}
+        </TableBody>
+      )}
     </Table>
   );
 };

@@ -1,28 +1,23 @@
-
-import React, { Component } from "react"
-import { Redirect } from "react-router-dom"
-import { clientAPI } from "../api"
-
-
+import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
+import { clientAPI } from "../api";
 
 interface State {
-    redirect: boolean
+  redirect: boolean;
 }
 
 export class Auth extends Component<{}, State> {
-    public state = {
-        redirect: false
-    }
+  public state = {
+    redirect: false
+  };
 
-    public async componentDidMount() {
-        const isSuccess = await clientAPI.createSessionID();
-        await clientAPI.getUserDetail();
-        this.setState({ redirect: isSuccess })
-    }
+  public async componentDidMount() {
+    const isSuccess = await clientAPI.createSessionID();
+    await clientAPI.getUserDetail();
+    this.setState({ redirect: isSuccess });
+  }
 
-    public render() {
-        return (
-            this.state.redirect ? <Redirect to="/" /> : ""
-        )
-    }
+  public render() {
+    return this.state.redirect ? <Redirect to="/" /> : "";
+  }
 }

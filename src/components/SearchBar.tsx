@@ -11,7 +11,7 @@ const TextInput = styled.input`
 const Label = styled.label`
   margin-right: 1rem;
   font-weight: bold;
-`
+`;
 
 interface Props {
   query: string;
@@ -20,17 +20,21 @@ interface Props {
 }
 
 export const SearchBar = ({ query = "", onChange, onSubmit }: Props) => {
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.value)
+    onChange(e.target.value);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    const _query = query.trim()
+    const _query = query.trim();
     if (e.key === "Enter" && _query !== "") {
       onSubmit(_query);
     }
   };
 
-  return (<><Label htmlFor="search-bar">Search:</Label><TextInput id="search-bar" onChange={handleChange} onKeyPress={handleKeyPress} /></>);
+  return (
+    <>
+      <Label htmlFor="search-bar">Search:</Label>
+      <TextInput id="search-bar" onChange={handleChange} onKeyPress={handleKeyPress} />
+    </>
+  );
 };
