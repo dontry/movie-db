@@ -22,7 +22,8 @@ function* logout() {
       type: LOGOUT_FAILURE,
       meta: {
         type: "error",
-        message: `Log out failed: ${e.message}`
+        message: `Log out failed`,
+        extra: e.message
       }
     });
   }
@@ -41,7 +42,8 @@ function* login() {
       type: LOGIN_FAILURE,
       meta: {
         type: "error",
-        message: `Log in failed: ${e.message}`
+        message: `Log in failed`,
+        extra: e.message
       }
     });
   }

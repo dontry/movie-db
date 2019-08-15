@@ -254,14 +254,9 @@ export class ClientAPI {
 
   public async logout() {
     const isSuccess = await this.deleteSessionID();
-    if (isSuccess) {
-      localStorage.removeItem("tvdb_requestToken");
-      localStorage.removeItem("tvdb_accessToken");
-      localStorage.removeItem("tvdb_accountID");
-      localStorage.removeItem("tvdb_sessionID");
-    } else {
-      throw Error("Logout Failure.");
-    }
+    localStorage.removeItem("tvdb_requestToken");
+    localStorage.removeItem("tvdb_accessToken");
+    localStorage.removeItem("tvdb_accountID");
   }
 }
 
