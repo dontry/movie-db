@@ -1,6 +1,7 @@
 
-import React, { useState, SyntheticEvent } from "react"
+import React, { useState, useEffect, SyntheticEvent } from "react"
 import styled from "styled-components"
+import { connect } from 'react-redux'
 import { clientAPI } from "api";
 import { space, SpaceProps } from "styled-system"
 import Pagination from "@atlaskit/pagination"
@@ -8,6 +9,8 @@ import { SearchBar } from "../components/SearchBar"
 import { ResultTable } from "../components/ResultTable"
 import { Container } from "../layout/Container"
 import { Show } from "../models/Show"
+import { selectWatchListMap } from "reducers/watchList";
+import { RootState } from "reducers/state";
 
 const SearchBarWrapper = styled.div`
   align-self: flex-end;
@@ -40,7 +43,11 @@ export const Paginator = ({ pages, onChange }: PaginatorProps) => {
   )
 }
 
-export const Home = () => {
+interface Props {
+  watchlistMap: Map<number, Show>
+}
+
+export const Home = ({ watchlistMap }: Props) => {
 
 
   const [pageIndex, setPageIndex] = useState(1)
@@ -48,7 +55,9 @@ export const Home = () => {
   const [query, setQuery] = useState<string>("")
   const [tvShows, setTvShows] = useState<Show[]>([])
 
+  let tvShowsWithWatchList = []
 
+  console.log("watchlistMap:", watchlistMap);
 
   // Search bar handlers
   const handleQueryChange = (_query: string) => {
@@ -71,18 +80,15 @@ export const Home = () => {
   }
 
 
-  // Result table handler
-  const handleToggleWatchList = (showId: number, toggle: boolean) => {
-    if (toggle) {
-      clientAPI.addToWatchList(showId);
-    } else {
-      clientAPI.removeFromWatchList(showId);
-    }
-  }
+
 
 
   const queryTvShows = async (_query: string, index: number) => {
     return await clientAPI.searchTvShows(_query, index);
+  }
+
+  const matchWatchList = (shows: Show[]): Show[] => {
+    return shows.map(show => ({ ...show, watchlist: watchlistMap.has(show.id) }))
   }
 
 
@@ -92,7 +98,7 @@ export const Home = () => {
         <SearchBarWrapper>
           <SearchBar query={query} onChange={handleQueryChange} onSubmit={handleSearch} />
         </SearchBarWrapper>
-        <ResultTable shows={tvShows} toggleWatchList={handleToggleWatchList} />
+        <ResultTable shows={matchWatchList(tvShows)} />
         {pages.length !== 0 && <Paginator pages={pages} onChange={handlePageChange} />}
       </ContentWrapper>
     </Container>
@@ -100,4 +106,11 @@ export const Home = () => {
   )
 }
 
+const mapStateToProps = (state: RootState) => ({
+  watchlistMap: selectWatchListMap(state)
+})
 
+
+
+
+export default connect(mapStateToProps)(Home)

@@ -5,14 +5,18 @@ import {
   LOGOUT_FAILURE,
   FETCH_USER_DETAIL_SUCCESS,
   LOGIN,
-  LOGIN_FAILURE
+  LOGIN_FAILURE,
+  LOGOUT_SUCCESS
 } from "actions/user";
 import { User } from "models/User";
+import { ADD_TO_WATCHLIST_REQUEST } from "actions/watchlist";
 
 function* logout() {
   try {
-    yield call(clientAPI.logout);
-    yield put({ type: LOGOUT });
+    yield call(clientAPI.logout.bind(clientAPI));
+    yield put({
+      type: LOGOUT_SUCCESS
+    });
   } catch (e) {
     yield put({
       type: LOGOUT_FAILURE,

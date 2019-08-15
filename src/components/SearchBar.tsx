@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 const TextInput = styled.input`
-  height: 1em;
   padding: 5px;
   width: 200px;
   border-radius: 2px;

@@ -1,13 +1,12 @@
 import React from "react";
 import { Container } from "layout/Container";
-import { WatchList, WatchListProps } from "components/WatchList";
+import WatchList from "components/WatchList";
 
-export const WatchListView = ({ shows, onDelete }: WatchListProps) => {
+export const WatchlistView = () => {
   return (
     <Container>
-      <WatchList shows={shows} onDelete={() => {}} />
+      <WatchList />
     </Container>
   );
 };
 
-export default WatchListView;

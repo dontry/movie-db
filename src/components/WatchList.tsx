@@ -1,8 +1,12 @@
 import React from "react";
 import styled from "styled-components";
+import { connect } from 'react-redux'
 import { Show } from "../models/Show";
 import { getYear } from "../utils/getYear";
 import garbage from "../assets/garbage.svg";
+import { RootState } from "reducers/state";
+import { Dispatch } from "redux";
+import { removeFromWatchList } from "actions/watchlist";
 
 const Wrapper = styled.div``;
 const Heading = styled.div`
@@ -28,10 +32,10 @@ const Description = styled.p`
 
 interface ShowProps {
   show: Show;
-  onDelete(id: number): void;
+  onRemove(show: Show): void;
 }
 
-export const ShowItem = ({ show, onDelete }: ShowProps) => {
+export const ShowItem = ({ show, onRemove }: ShowProps) => {
   const { id, name: title, first_air_date, overview } = show;
   return (
     <Wrapper>
@@ -39,7 +43,7 @@ export const ShowItem = ({ show, onDelete }: ShowProps) => {
         <Title>
           {title} ({getYear(first_air_date)})
         </Title>
-        <ActionIcon onClick={() => onDelete(id)} src={garbage} />
+        <ActionIcon onClick={() => onRemove(show)} src={garbage} />
       </Heading>
       <Description>{overview}</Description>
     </Wrapper>
@@ -52,15 +56,26 @@ const ListWrapper = styled.div`
 
 export interface WatchListProps {
   shows: Show[];
-  onDelete(id: number): void;
+  handleRemove(show: Show): void;
 }
 
-export const WatchList = ({ shows, onDelete }: WatchListProps) => {
+export const WatchList = ({ shows, handleRemove }: WatchListProps) => {
   return (
     <ListWrapper>
       {shows.map(show => (
-        <ShowItem show={show} onDelete={onDelete} />
+        <ShowItem show={show} onRemove={handleRemove} />
       ))}
     </ListWrapper>
   );
 };
+
+const mapStateToProps = (state: RootState) => ({
+  shows: state.watchlist
+})
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  handleRemove: (show: Show) => dispatch(removeFromWatchList(show))
+})
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(WatchList)
