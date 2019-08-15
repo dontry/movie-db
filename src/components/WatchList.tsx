@@ -34,10 +34,10 @@ interface ShowProps {
 
 
 export const ShowItem = ({ show, onDelete }: ShowProps) => {
-  const { id, title, release_date, overview } = show;
+  const { id, name: title, first_air_date, overview } = show;
   return (
     <Wrapper>
-      <Heading><Title>{title} ({getYear(release_date)})</Title><ActionIcon onClick={() => onDelete(id)} src={garbage} /></Heading>
+      <Heading><Title>{title} ({getYear(first_air_date)})</Title><ActionIcon onClick={() => onDelete(id)} src={garbage} /></Heading>
       <Description>{overview}</Description>
     </Wrapper>
   )

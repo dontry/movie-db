@@ -16,6 +16,7 @@ export class Auth extends Component<{}, State> {
 
     public async componentDidMount() {
         const isSuccess = await clientAPI.createSessionID();
+        await clientAPI.getUserDetail();
         this.setState({ redirect: isSuccess })
     }
 
