@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import { Box, ButtonPrimary } from '@primer/components'
 import { space, SpaceProps } from "styled-system"
 import { clientAPI } from "../api";
 
-const Wrapper = styled.div`
+const Wrapper = styled(Box)`
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -18,9 +19,6 @@ const Wrapper = styled.div`
 
 const Title = styled.h1``;
 
-const Button = styled.button<SpaceProps>`
-  ${space}
-`;
 
 export class Login extends Component {
   public handleClick = async () => {
@@ -37,9 +35,9 @@ export class Login extends Component {
 
   public render() {
     return (
-      <Wrapper>
+      <Wrapper p={[4]}>
         <Title>My TV Shows DB</Title>
-        <Button my={5} onClick={this.handleClick}>Login</Button>
+        <ButtonPrimary my={5} onClick={this.handleClick}>Login</ButtonPrimary>
       </Wrapper>
     );
   }

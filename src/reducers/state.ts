@@ -1,5 +1,9 @@
-import { State as WatchListState } from '../reducers/watchList'
+import { User } from "../models/User";
+import { State as NotificationState } from "../reducers/notification";
+import { Show } from "models/Show";
 export interface RootState {
-  watchList: WatchListState;
-  user: User | {};
+  user: User | null;
+  watchList: Show[];
+  loading: boolean;
+  notification: NotificationState;
 }

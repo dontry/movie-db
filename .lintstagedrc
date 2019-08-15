@@ -1,13 +1,13 @@
 {
-  "linters": {
-    "src/**/*.+(js|jsx|ts|tsx)": [
-      "tslint"
-    ],
-    "**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|graphql|mdx)": [
-      "prettier --write --list-different",
-      "git add"
-    ]
-  },
-  "ignore": ["**/dist/*.min.js", "**/*.d.ts"]
+  "**/*.+(js|jsx)": [
+    "eslint --fix",
+    "prettier --write",
+    "git add"
+  ],
+  "**/*.+(css)": [
+    "prettier --write",
+    "stylelint"
+  ]
 }
+
  
