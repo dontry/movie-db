@@ -4,6 +4,7 @@ import { clientAPI } from "api";
 
 
 export const ProtectedRoute = ({ component: Component, ...rest }: any) => {
+    console.log("getSessionID:", clientAPI.getSessionID())
     return (
         <Route {...rest} render={props =>
             !!clientAPI.getSessionID() ? <Component {...props} /> : (

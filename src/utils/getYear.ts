@@ -1,4 +1,5 @@
 export function getYear(dateString: string) {
   const date = new Date(dateString);
-  return date.getFullYear();
+  const year = date.getFullYear();
+  return Number.isNaN(year) ? "N/A" : year;
 }

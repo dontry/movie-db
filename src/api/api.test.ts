@@ -25,6 +25,7 @@ describe("authentication", () => {
                 session_id: "session_id"
             }
         }))
+        window.localStorage.getItem = jest.fn((key: string) => "session_id")
         await clientAPI.createSessionID();
         expect(clientAPI.getSessionID()).toBe("session_id");
     })

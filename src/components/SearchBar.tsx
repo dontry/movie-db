@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const TextInput = styled.input`
@@ -14,20 +14,21 @@ const Label = styled.label`
 `
 
 interface Props {
+  query: string;
+  onChange(query: string): void;
   onSubmit(query: string): void;
 }
 
-export const SearchBar = ({ onSubmit }: Props) => {
-  const [query, setQuery] = useState("");
+export const SearchBar = ({ query = "", onChange, onSubmit }: Props) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value);
+    onChange(e.target.value)
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      onSubmit(query);
-      setQuery("");
+    const _query = query.trim()
+    if (e.key === "Enter" && _query !== "") {
+      onSubmit(_query);
     }
   };
 
