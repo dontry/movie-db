@@ -18,7 +18,7 @@ export default (state = initialState, action: any): Show[] => {
     case ADD_TO_WATCHLIST_SUCCESS:
       return [...state, action.payload];
     case REMOVE_FROM_WATCHLIST_SUCCESS:
-      return state.filter(show => show !== action.payload.id);
+      return state.filter(show => show.id !== action.payload.id);
     default:
       return state;
   }

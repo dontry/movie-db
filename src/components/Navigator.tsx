@@ -16,11 +16,12 @@ const NavList = styled.ul<SpaceProps | LayoutProps | ColorProps>`
 const Item = styled.li`
   padding-left: 0;
   text-align: center;
-  margin-left: 1rem;
-  margin-right: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 
-  &:first-child {
-    margin-left: 0;
+
+  &:not(:first-child) {
+    border-left: 1px solid #000;
   }
 `;
 
@@ -37,7 +38,7 @@ export const Navigator = ({ navLinks = [] }: Props) => {
             <Item key={item.text}>
               <Link to={item.link}>{item.text}</Link>
             </Item>
-            {navLinks.length - 1 !== index && <span>|</span>}
+            {/* {navLinks.length - 1 !== index && <span>|</span>} */}
           </>
         ))}
       </NavList>

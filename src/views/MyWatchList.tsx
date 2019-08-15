@@ -2,7 +2,7 @@ import React from "react";
 import { Container } from "layout/Container";
 import WatchList from "components/WatchList";
 
-export const WatchlistView = () => {
+export const MyWatchlist = () => {
   return (
     <Container>
       <WatchList />
