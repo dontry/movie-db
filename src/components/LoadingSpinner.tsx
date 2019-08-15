@@ -2,79 +2,122 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const Spinner = styled.div`
-  .lds-ellipsis {
+ &.lds-default {
     display: inline-block;
     position: relative;
     width: 64px;
     height: 64px;
   }
-  .lds-ellipsis div {
+  &.lds-default div {
     position: absolute;
-    top: 27px;
-    width: 11px;
-    height: 11px;
+    width: 5px;
+    height: 5px;
+    background: #acacac;
     border-radius: 50%;
-    background: #fff;
-    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+    animation: lds-default 1.2s linear infinite;
   }
-
-  .lds-ellipsis div:nth-child(1) {
+  &.lds-default div:nth-child(1) {
+    animation-delay: 0s;
+    top: 29px;
+    left: 53px;
+  }
+  &.lds-default div:nth-child(2) {
+    animation-delay: -0.1s;
+    top: 18px;
+    left: 50px;
+  }
+  &.lds-default div:nth-child(3) {
+    animation-delay: -0.2s;
+    top: 9px;
+    left: 41px;
+  }
+  &.lds-default div:nth-child(4) {
+    animation-delay: -0.3s;
+    top: 6px;
+    left: 29px;
+  }
+  &.lds-default div:nth-child(5) {
+    animation-delay: -0.4s;
+    top: 9px;
+    left: 18px;
+  }
+  &.lds-default div:nth-child(6) {
+    animation-delay: -0.5s;
+    top: 18px;
+    left: 9px;
+  }
+  &.lds-default div:nth-child(7) {
+    animation-delay: -0.6s;
+    top: 29px;
     left: 6px;
-    animation: lds-ellipsis1 0.6s infinite;
   }
-
-  .lds-ellipsis div:nth-child(2) {
-    left: 6px;
-    animation: lds-ellipsis2 0.6s infinite;
+  &.lds-default div:nth-child(8) {
+    animation-delay: -0.7s;
+    top: 41px;
+    left: 9px;
   }
-  .lds-ellipsis div:nth-child(3) {
-    left: 26px;
-    animation: lds-ellipsis2 0.6s infinite;
+  &.lds-default div:nth-child(9) {
+    animation-delay: -0.8s;
+    top: 50px;
+    left: 18px;
   }
-  .lds-ellipsis div:nth-child(4) {
-    left: 45px;
-    animation: lds-ellipsis3 0.6s infinite;
+  &.lds-default div:nth-child(10) {
+    animation-delay: -0.9s;
+    top: 53px;
+    left: 29px;
   }
-
-  @keyframes lds-ellipsis1 {
-    0% {
-      transform: scale(0);
-    }
+  &.lds-default div:nth-child(11) {
+    animation-delay: -1s;
+    top: 50px;
+    left: 41px;
+  }
+  &.lds-default div:nth-child(12) {
+    animation-delay: -1.1s;
+    top: 41px;
+    left: 50px;
+  }
+  @keyframes lds-default {
+    0%,
+    20%,
+    80%,
     100% {
       transform: scale(1);
     }
-  }
-  @keyframes lds-ellipsis3 {
-    0% {
-      transform: scale(1);
-    }
-    100% {
-      transform: scale(0);
-    }
-  }
-  @keyframes lds-ellipsis2 {
-    0% {
-      transform: translate(0, 0);
-    }
-    100% {
-      transform: translate(19px, 0);
+    50% {
+      transform: scale(1.5);
     }
   }
 `;
+interface Props {
+  delay?: number
+}
 
-const LoadingSpinner = () => {
+export const LoadingSpinner = ({ delay = 0 }: Props) => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setVisible(true);
-    }, 400);
+    }, delay);
     return () => {
       clearTimeout(timer);
       setVisible(false);
     };
-  });
-  return visible ? <Spinner /> : "";
+  }, []);
+  return visible ? (<Spinner className="lds-default">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </Spinner>) : <span />;
 };
 
 export default LoadingSpinner;
