@@ -2,6 +2,14 @@
 
 Demo: [https://tvshow-db.mccoy018.now.sh/](https://tvshow-db.mccoy018.now.sh/)
 
+#### Home
+
+![home](docs/home.PNG)
+
+#### Watchlist
+
+![watchlist](docs/watchlist.PNG)
+
 - Install and launch the app
 
   - `npm install`
