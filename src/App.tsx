@@ -1,20 +1,18 @@
 import React from "react";
 import { hot } from "react-hot-loader/root";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import { PersistGate } from 'redux-persist/integration/react'
+import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
 import { theme } from "@primer/components";
-import { configureStore } from 'store'
-import { rootSaga } from 'sagas'
+import { configureStore } from "store";
+import { rootSaga } from "sagas";
 import Header from "layout/Header";
 import Login from "views/Login";
 import Home from "views/Home";
 import MyWatchlist from "views/MyWatchList";
-import Auth from "views/Auth";
 import ProtectedRoute from "components/ProtectedRoute";
-import LoadingSpinner from "components/LoadingSpinner";
 import "react-toastify/dist/ReactToastify.css";
 
 const { store, persistor } = configureStore();

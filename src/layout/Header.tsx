@@ -1,11 +1,12 @@
 import React, { SyntheticEvent } from "react";
 import styled from "styled-components";
-import { Button } from '@primer/components'
-import { Dispatch } from 'redux'
-import { connect } from 'react-redux'
-import { Navigator } from "components/Navigator";
+import { Button } from "@primer/components";
+import { Dispatch } from "redux";
+import { connect } from "react-redux";
+import Navigator from "components/Navigator";
 import { NavItem } from "models/NavItem";
-import { logout, LOGOUT } from "actions/user";
+import { LOGOUT } from "actions/user";
+import { Link } from "react-router-dom";
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -17,6 +18,10 @@ const HeaderWrapper = styled.div`
 
 const Title = styled.h2`
   margin-right: 10vw;
+  a {
+    color: #333;
+    text-decoration: none;
+  }
 `;
 
 interface Props {
@@ -30,21 +35,31 @@ const defaultNavLinks: NavItem[] = [
   { text: "Watch List", link: "/watchlist" }
 ];
 
-export const Header = ({ title = "My TV shows", navLinks = defaultNavLinks, handleLogout }: Props) => {
+export const Header = ({
+  title = "My TV shows",
+  navLinks = defaultNavLinks,
+  handleLogout
+}: Props) => {
   return (
     <HeaderWrapper>
-      <Title>{title}</Title>
+      <Title>
+        <Link to="/">{title}</Link>
+      </Title>
       <Navigator navLinks={navLinks} />
-      <Button ml={["auto"]} onClick={handleLogout}>Logout</Button>
+      <Button ml={["auto"]} onClick={handleLogout}>
+        Logout
+      </Button>
     </HeaderWrapper>
   );
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   handleLogout() {
-    dispatch({ type: LOGOUT })
+    dispatch({ type: LOGOUT });
   }
-})
+});
 
-export default connect(null, mapDispatchToProps)(Header)
-
+export default connect(
+  null,
+  mapDispatchToProps
+)(Header);

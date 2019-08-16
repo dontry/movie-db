@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 import { Show } from "../models/Show";
 import { getYear } from "../utils/getYear";
 import garbage from "../assets/garbage.svg";
@@ -71,11 +71,13 @@ export const WatchList = ({ shows, handleRemove }: WatchListProps) => {
 
 const mapStateToProps = (state: RootState) => ({
   shows: state.watchlist
-})
+});
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   handleRemove: (show: Show) => dispatch(removeFromWatchList(show))
-})
+});
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(WatchList)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(WatchList);

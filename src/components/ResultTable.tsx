@@ -1,8 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { layout, space, color, LayoutProps, ColorProps, SpaceProps } from "styled-system";
-import ShowEntry from './ShowEntry'
+import { connect } from "react-redux";
+import ShowEntry from "./ShowEntry";
 import { Show } from "../models/Show";
+import { RootState } from "reducers/state";
+import LoadingSpinner from "./LoadingSpinner";
 
 const CellWidth = ["100px", "200px", "250px"];
 const Table = styled.table<LayoutProps | ColorProps>`
@@ -39,17 +42,31 @@ const TableBody = styled.tbody<LayoutProps>`
   ${layout}
 `;
 
-const EmptyText = styled.h4`
+const Message = styled.h4`
   margin: 32px auto;
   text-align: center;
   color: #bbb;
 `;
 
+const LoadingWrapper = styled.div`
+  position: relative;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0.5;
+  display: flex;
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+`;
+
 interface ResultTableProps {
   shows: Show[];
+  loading: boolean;
 }
 
-export const ResultTable = ({ shows = [] }: ResultTableProps) => {
+export const ResultTable = ({ shows = [], loading }: ResultTableProps) => {
   return (
     <Table>
       <TableHead>
@@ -65,15 +82,20 @@ export const ResultTable = ({ shows = [] }: ResultTableProps) => {
           </TableHeadCell>
         </TableHeadRow>
       </TableHead>
-      {shows.length === 0 ? (
-        <EmptyText>Empty list</EmptyText>
+
+      {loading ? (
+        <LoadingWrapper>
+          <LoadingSpinner delay={300} />
+        </LoadingWrapper>
+      ) : shows.length === 0 ? (
+        <Message>Empty list</Message>
       ) : (
-          <TableBody height={["60vh", "50vh"]}>
-            {shows.map(show => (
-              <ShowEntry key={show.id} show={show} />
-            ))}
-          </TableBody>
-        )}
+        <TableBody height={["60vh", "50vh"]}>
+          {shows.map(show => (
+            <ShowEntry key={show.id} show={show} />
+          ))}
+        </TableBody>
+      )}
     </Table>
   );
 };

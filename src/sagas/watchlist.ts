@@ -1,4 +1,4 @@
-import { all, call, put, takeLatest, take, takeEvery } from "redux-saga/effects";
+import { all, call, put, takeLatest } from "redux-saga/effects";
 import { clientAPI } from "api";
 import {
   ADD_TO_WATCHLIST_SUCCESS,
@@ -11,7 +11,6 @@ import {
   FETCH_WATCHLIST_SUCCESS,
   FETCH_WATCHLIST_FAILURE
 } from "actions/watchlist";
-import { User } from "models/User";
 import { Show } from "models/Show";
 
 function* fetchWatchList(action: any) {
