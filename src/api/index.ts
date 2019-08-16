@@ -240,6 +240,7 @@ export class ClientAPI {
     return res.data.status_code === 1;
   }
 
+  // https://developers.themoviedb.org/3/search/search-tv-shows
   public async searchTvShows(query: string, page: number = 1, language: string = "en-US") {
     const res = await this.get(`/search/tv`, { api_key: this.apiKey, query, page, language });
     return res.data;

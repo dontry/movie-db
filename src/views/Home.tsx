@@ -1,5 +1,6 @@
 import React, { useState, SyntheticEvent } from "react";
 import styled from "styled-components";
+import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { clientAPI } from "api";
 import { space, SpaceProps } from "styled-system";
@@ -8,8 +9,9 @@ import { SearchBar } from "../components/SearchBar";
 import { ResultTable } from "../components/ResultTable";
 import { Container } from "../layout/Container";
 import { Show } from "../models/Show";
-import { selectWatchListMap } from "reducers/watchList";
+import { getSearchResults } from "reducers/searchlist";
 import { RootState } from "reducers/state";
+import { search } from "actions/searchlist";
 
 const SearchBarWrapper = styled.div`
   align-self: flex-end;
@@ -42,15 +44,15 @@ export const Paginator = ({ pages, onChange }: PaginatorProps) => {
 };
 
 interface Props {
-  watchlistMap: Map<number, Show>;
+  shows: Show[];
+  pages: number[];
+  loading: boolean;
+  onSearch(query: string, index: number): void;
 }
 
-export const Home = ({ watchlistMap }: Props) => {
+export const Home = ({ shows, pages, loading, onSearch }: Props) => {
   const [pageIndex, setPageIndex] = useState(1);
-  const [pages, setPages] = useState<number[]>([]);
   const [query, setQuery] = useState<string>("");
-  const [tvShows, setTvShows] = useState<Show[]>([]);
-  const [loading, setLoading] = useState(false);
 
   // Search bar handlers
   const handleQueryChange = (_query: string) => {
@@ -59,30 +61,16 @@ export const Home = ({ watchlistMap }: Props) => {
 
   const handleSearch = async (_query: string) => {
     setPageIndex(1);
-    const res = await queryTvShows(_query, pageIndex);
-    setTvShows(res.results);
-    const _pages = (res.total_results = 0
-      ? []
-      : Array.from(Array(res.total_pages), (x, i) => i + 1));
-    setPages(_pages);
+    await queryTvShows(_query, pageIndex);
   };
 
   // Pagination handler
   const handlePageChange = async (event: SyntheticEvent, index: number) => {
     setPageIndex(index);
-    const res = await clientAPI.searchTvShows(query, index);
-    setTvShows(res.results);
   };
 
   const queryTvShows = async (_query: string, index: number) => {
-    setLoading(true);
-    const res = await clientAPI.searchTvShows(_query, index);
-    setLoading(false);
-    return res;
-  };
-
-  const matchWatchList = (shows: Show[]): Show[] => {
-    return shows.map(show => ({ ...show, watchlist: watchlistMap.has(show.id) }));
+    onSearch(query, index);
   };
 
   return (
@@ -91,15 +79,28 @@ export const Home = ({ watchlistMap }: Props) => {
         <SearchBarWrapper>
           <SearchBar query={query} onChange={handleQueryChange} onSubmit={handleSearch} />
         </SearchBarWrapper>
-        <ResultTable shows={matchWatchList(tvShows)} loading={loading} />
+        <ResultTable shows={shows} loading={loading} />
         {pages.length !== 0 && <Paginator pages={pages} onChange={handlePageChange} />}
       </ContentWrapper>
     </Container>
   );
 };
 
+function getPagesArray(pageCount: number): number[] {
+  return pageCount === 0 ? [] : Array.from(Array(pageCount), (x, i) => i + 1);
+}
+
 const mapStateToProps = (state: RootState) => ({
-  watchlistMap: selectWatchListMap(state)
+  shows: getSearchResults(state),
+  pages: getPagesArray(state.searchlist.pages),
+  loading: state.loading
 });
 
-export default connect(mapStateToProps)(Home);
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  onSearch: (query: string, index: number) => dispatch(search(query, index))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home);
