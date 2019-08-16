@@ -1,21 +1,20 @@
-
-import React, { useState, useEffect, SyntheticEvent } from "react"
-import styled from "styled-components"
-import { connect } from 'react-redux'
+import React, { useState, SyntheticEvent } from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
 import { clientAPI } from "api";
-import { space, SpaceProps } from "styled-system"
-import Pagination from "@atlaskit/pagination"
-import { SearchBar } from "../components/SearchBar"
-import { ResultTable } from "../components/ResultTable"
-import { Container } from "../layout/Container"
-import { Show } from "../models/Show"
+import { space, SpaceProps } from "styled-system";
+import Pagination from "@atlaskit/pagination";
+import { SearchBar } from "../components/SearchBar";
+import { ResultTable } from "../components/ResultTable";
+import { Container } from "../layout/Container";
+import { Show } from "../models/Show";
 import { selectWatchListMap } from "reducers/watchList";
 import { RootState } from "reducers/state";
 
 const SearchBarWrapper = styled.div`
   align-self: flex-end;
   margin-bottom: 30px;
-`
+`;
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -23,12 +22,11 @@ const ContentWrapper = styled.div`
   align-items: center;
   max-width: 1200px;
   margin: 50px auto 0;
-`
-
+`;
 
 const PaginationWrapper = styled.div<SpaceProps>`
   ${space}
-`
+`;
 
 interface PaginatorProps {
   pages: number[];
@@ -40,24 +38,19 @@ export const Paginator = ({ pages, onChange }: PaginatorProps) => {
     <PaginationWrapper mt={[8, 16]}>
       <Pagination pages={pages} onChange={onChange} />
     </PaginationWrapper>
-  )
-}
+  );
+};
 
 interface Props {
-  watchlistMap: Map<number, Show>
+  watchlistMap: Map<number, Show>;
 }
 
 export const Home = ({ watchlistMap }: Props) => {
-
-
-  const [pageIndex, setPageIndex] = useState(1)
+  const [pageIndex, setPageIndex] = useState(1);
   const [pages, setPages] = useState<number[]>([]);
-  const [query, setQuery] = useState<string>("")
-  const [tvShows, setTvShows] = useState<Show[]>([])
-
-  let tvShowsWithWatchList = []
-
-  console.log("watchlistMap:", watchlistMap);
+  const [query, setQuery] = useState<string>("");
+  const [tvShows, setTvShows] = useState<Show[]>([]);
+  const [loading, setLoading] = useState(false);
 
   // Search bar handlers
   const handleQueryChange = (_query: string) => {
@@ -65,32 +58,32 @@ export const Home = ({ watchlistMap }: Props) => {
   };
 
   const handleSearch = async (_query: string) => {
-    setPageIndex(1)
-    const res = await queryTvShows(_query, pageIndex)
+    setPageIndex(1);
+    const res = await queryTvShows(_query, pageIndex);
     setTvShows(res.results);
-    const _pages = res.total_results = 0 ? [] : Array.from(Array(res.total_pages), (x, i) => i + 1)
+    const _pages = (res.total_results = 0
+      ? []
+      : Array.from(Array(res.total_pages), (x, i) => i + 1));
     setPages(_pages);
-  }
+  };
 
   // Pagination handler
   const handlePageChange = async (event: SyntheticEvent, index: number) => {
-    setPageIndex(index)
+    setPageIndex(index);
     const res = await clientAPI.searchTvShows(query, index);
     setTvShows(res.results);
-  }
-
-
-
-
+  };
 
   const queryTvShows = async (_query: string, index: number) => {
-    return await clientAPI.searchTvShows(_query, index);
-  }
+    setLoading(true);
+    const res = await clientAPI.searchTvShows(_query, index);
+    setLoading(false);
+    return res;
+  };
 
   const matchWatchList = (shows: Show[]): Show[] => {
-    return shows.map(show => ({ ...show, watchlist: watchlistMap.has(show.id) }))
-  }
-
+    return shows.map(show => ({ ...show, watchlist: watchlistMap.has(show.id) }));
+  };
 
   return (
     <Container width={[1, 4 / 5]}>
@@ -98,19 +91,15 @@ export const Home = ({ watchlistMap }: Props) => {
         <SearchBarWrapper>
           <SearchBar query={query} onChange={handleQueryChange} onSubmit={handleSearch} />
         </SearchBarWrapper>
-        <ResultTable shows={matchWatchList(tvShows)} />
+        <ResultTable shows={matchWatchList(tvShows)} loading={loading} />
         {pages.length !== 0 && <Paginator pages={pages} onChange={handlePageChange} />}
       </ContentWrapper>
     </Container>
-
-  )
-}
+  );
+};
 
 const mapStateToProps = (state: RootState) => ({
   watchlistMap: selectWatchListMap(state)
-})
+});
 
-
-
-
-export default connect(mapStateToProps)(Home)
+export default connect(mapStateToProps)(Home);

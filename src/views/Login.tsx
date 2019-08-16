@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { connect } from 'react-redux'
-import { Box, ButtonPrimary } from '@primer/components'
-import { space, SpaceProps } from "styled-system"
+import { color, ColorProps } from "styled-system";
+import { connect } from "react-redux";
+import { Box, ButtonPrimary } from "@primer/components";
 import { clientAPI } from "../api";
 import { Redirect } from "react-router";
 import LoadingSpinner from "components/LoadingSpinner";
@@ -23,8 +23,11 @@ const Wrapper = styled(Box)`
   border-radius: 3px;
 `;
 
-
-const Title = styled.h1``;
+const Title = styled.h2<ColorProps>`
+  text-align: center;
+  line-height: 1.75;
+  ${color}
+`;
 
 interface Props {
   user: User | null;
@@ -32,43 +35,53 @@ interface Props {
   handleLogin(): void;
 }
 
-
 export class Login extends Component<Props> {
-  state = {
+  public state = {
     isAuthenticating: false
-  }
+  };
   public handleClick = async () => {
     await clientAPI.createRequestToken();
-    this.openPopup();
+    this.forwardToMovieDB();
   };
 
-  componentDidMount() {
-    let params = new URLSearchParams(this.props.location.search);
-    const request_token = params.get('request_token');
-    const approved = params.get('approved');
+  public componentDidMount() {
+    const params = new URLSearchParams(this.props.location.search);
+    const request_token = params.get("request_token");
+    const approved = params.get("approved");
     if (request_token === clientAPI.getRequestToken() && approved) {
       this.props.handleLogin();
-      this.setState({ isAuthenticating: true })
+      this.setState({ isAuthenticating: true });
     }
   }
 
-  public openPopup = () => {
+  public forwardToMovieDB = () => {
     const url = `https://www.themoviedb.org/authenticate/${clientAPI.getRequestToken()}?redirect_to=${
       process.env.REACT_APP_BASE_URL
-      }/login`;
+    }/login`;
     window.location.assign(url);
   };
 
   public render() {
-    if (this.props.user) return <Redirect to="/" />;
+    if (this.props.user) {
+      return <Redirect to="/" />;
+    }
 
     return (
       <Wrapper p={[4]}>
-        {this.state.isAuthenticating ? <LoadingSpinner /> :
+        {this.state.isAuthenticating ? (
+          <LoadingSpinner />
+        ) : (
           <>
-            <Title>My TV Shows DB</Title>
-            <ButtonPrimary my={5} onClick={this.handleClick}>Login</ButtonPrimary>
-          </>}
+            <Title color="purple">
+              {" "}
+              Welcome to <br />
+              TV Shows DB
+            </Title>
+            <ButtonPrimary my={5} onClick={this.handleClick}>
+              Login
+            </ButtonPrimary>
+          </>
+        )}
       </Wrapper>
     );
   }
@@ -76,9 +89,12 @@ export class Login extends Component<Props> {
 
 const mapStateToProps = (state: RootState) => ({
   user: state.user
-})
+});
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   handleLogin: () => dispatch({ type: LOGIN })
-})
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);

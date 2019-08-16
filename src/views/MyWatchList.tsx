@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container } from "layout/Container";
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 import WatchList from "components/WatchList";
 import { RootState } from "reducers/state";
 import { Dispatch } from "redux";
@@ -13,12 +13,12 @@ interface Props {
 }
 
 class MyWatchList extends Component<Props> {
-  componentDidMount() {
+  public componentDidMount() {
     if (this.props.watchlist.length === 0) {
       this.props.getWatchlist();
     }
   }
-  render() {
+  public render() {
     return (
       <Container>
         <WatchList />
@@ -27,16 +27,17 @@ class MyWatchList extends Component<Props> {
   }
 }
 
-
-
 const mapStateToProps = (state: RootState) => ({
-  watchlist: state.watchlist,
-})
+  watchlist: state.watchlist
+});
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  getWatchlist() { dispatch({ type: FETCH_WATCHLIST_REQUEST }) }
-})
+  getWatchlist() {
+    dispatch({ type: FETCH_WATCHLIST_REQUEST });
+  }
+});
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(MyWatchList)
-
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MyWatchList);

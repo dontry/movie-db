@@ -5,8 +5,8 @@ import { default as watchlist } from "./watchList";
 import { combineReducers } from "redux";
 
 export const rootReducer = combineReducers({
-    user,
-    loading,
-    notification,
-    watchlist
+  user,
+  loading,
+  notification,
+  watchlist
 });

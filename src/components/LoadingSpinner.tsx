@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const Spinner = styled.div`
- &.lds-default {
+  &.lds-default {
     display: inline-block;
     position: relative;
     width: 64px;
@@ -89,7 +89,7 @@ const Spinner = styled.div`
   }
 `;
 interface Props {
-  delay?: number
+  delay?: number;
 }
 
 export const LoadingSpinner = ({ delay = 0 }: Props) => {
@@ -104,20 +104,24 @@ export const LoadingSpinner = ({ delay = 0 }: Props) => {
       setVisible(false);
     };
   }, []);
-  return visible ? (<Spinner className="lds-default">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-  </Spinner>) : <span />;
+  return visible ? (
+    <Spinner className="lds-default">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </Spinner>
+  ) : (
+    <span />
+  );
 };
 
 export default LoadingSpinner;
